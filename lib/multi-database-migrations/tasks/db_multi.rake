@@ -5,7 +5,7 @@ module MultiMigrations
     raise "VALID DATABASE is required" unless connection_key
     ActiveRecord::Base.establish_connection(connection_key)
   end
-  
+
   def self.identify_configuration
     if ActiveRecord::Base.configurations.has_key?("#{ENV['DATABASE']}_#{RAILS_ENV}")
       return "#{ENV['DATABASE']}_#{RAILS_ENV}"
@@ -24,7 +24,7 @@ namespace :db do
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate("db/migrate/#{ENV['DATABASE']}", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
     end
-    
+
     namespace :migrate do
       desc  'Rollbacks the database one migration and re migrate up. If you want to rollback more than one step, define STEP=x'
       task :redo => [ 'db:multi:rollback', 'db:multi:migrate' ]
@@ -50,7 +50,7 @@ namespace :db do
         Rake::Task["db:multi:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
       end
     end
-    
+
     desc 'Rolls the schema back to the previous version. Specify the number of steps with STEP=n'
     task :rollback => :environment do
       step = ENV['STEP'] ? ENV['STEP'].to_i : 1
@@ -59,7 +59,7 @@ namespace :db do
       Rake::Task["db:multi:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
     end
 
-    
+
     namespace :schema do
       desc "Create a db/schema.rb file that can be portably used against any DB supported by AR"
       task :dump => :environment do
@@ -77,6 +77,6 @@ namespace :db do
         load(file)
       end
     end
-    
+
   end
 end
