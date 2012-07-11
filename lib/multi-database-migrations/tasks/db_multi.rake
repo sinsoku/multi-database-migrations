@@ -18,6 +18,14 @@ end
 
 namespace :db do
   namespace :multi do
+    desc "Create the multi database from config/database.yml for the current Rails.env"
+    task :create => :environment do
+      environments = ActiveRecord::Base.configurations.keys.select { |x| x =~ /#{Rails.env}$/ }
+      environments += ActiveRecord::Base.configurations.keys.select { |x| x =~ /test$/ } if Rails.env.development?
+      configs_for_multi_environment = ActiveRecord::Base.configurations.values_at(*environments).compact.reject { |config| config['database'].blank? }
+      configs_for_multi_environment.each { |config| create_database(config) }
+    end
+
     desc "Migrate through the scripts in db/migrate/<dbname>/ Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :migrate => :environment do
       MultiMigrations.make_connection(ENV['DATABASE'])
