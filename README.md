@@ -6,15 +6,11 @@ A plugin to make it easier to host migrations for multiple databases in one rail
 
 Add this line to your application's Gemfile:
 
-    gem 'multi-database-migrations'
+    gem 'multi-database-migrations', git: 'git://github.com/sinsoku/multi-database-migrations.git', branch: 'develop'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install multi-database-migrations
 
 ## CONCEPT
 
